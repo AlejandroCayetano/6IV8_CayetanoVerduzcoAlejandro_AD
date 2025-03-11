@@ -16,14 +16,20 @@ estadisticas = pd.DataFrame({
     "Medida": ["Rango", "Media", "Mediana", "Moda", "Varianza", "Desviación Estándar"],
     "Valor": [rango, media, mediana, moda, varianza, desv]
 })
-estadisticas['Valor'] = estadisticas['Valor'].apply(lambda x: f"{x:,.2f}")
-print(estadisticas.to_string(index=False))
+estadisticas['Valor'] = estadisticas['Valor'].apply(lambda x: f"{x:,.2f}") 
+print(estadisticas)
 
 # Histograma
+df['total_bedrooms_norm'] = df['total_bedrooms'] * (df['median_house_value'].max() / df['total_bedrooms'].max())
+df['population_norm'] = df['population'] * (df['median_house_value'].max() / df['population'].max())
+
 plt.figure(figsize=(10, 5))
 plt.hist(df['median_house_value'], bins=30, alpha=0.5, label='Median House Value', color='blue')
-plt.hist(df['total_bedrooms'], bins=30, alpha=0.5, label='Total Bedrooms', color='red')
-plt.hist(df['population'], bins=30, alpha=0.5, label='Population', color='green')
+plt.hist(df['total_bedrooms_norm'], bins=30, alpha=0.5, label='Total Bedrooms', color='red')
+plt.hist(df['population_norm'], bins=30, alpha=0.5, label='Population', color='green')
+
+# Línea de la media de median_house_value
+plt.axvline(media, color='black', linestyle='dashed', linewidth=2, label=f'Media: ${media:,.0f}')
 
 # Nombramos ejes
 plt.xlabel("Valores")
