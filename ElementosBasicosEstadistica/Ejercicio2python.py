@@ -66,3 +66,23 @@ plt.figure(figsize=(8, 8))
 plt.pie(ventas_por_sucursal, labels=ventas_por_sucursal.index, autopct="%1.1f%%", startangle=140)
 plt.title("Distribución de Ventas por Sucursal")
 plt.show()
+
+#8- Gráfico de deudas totales por sucursal respecto del margen de utilidad
+deudas_por_sucursal = df.groupby("suc")["adeudo_actual"].sum()
+margen_utilidad_por_sucursal = (ventas_por_sucursal - deudas_por_sucursal) / ventas_por_sucursal * 100
+
+fig, ax1 = plt.subplots(figsize=(10, 5))
+
+ax1.bar(deudas_por_sucursal.index, deudas_por_sucursal, color="#83E5FF", label="Deuda Total")
+ax1.set_xlabel("Sucursal")
+ax1.set_ylabel("Deuda Total", color="#83E5FF")
+ax1.tick_params(axis="y", labelcolor="#83E5FF")
+
+ax2 = ax1.twinx()
+ax2.plot(margen_utilidad_por_sucursal.index, margen_utilidad_por_sucursal, marker="o", linestyle="--", color="#57EBA9", label="Margen de Utilidad")
+ax2.set_ylabel("Margen de Utilidad (%)", color="#57EBA9")
+ax2.tick_params(axis="y", labelcolor="#57EBA9")
+
+plt.title("Deuda Total por Sucursal vs Margen de Utilidad")
+fig.tight_layout()
+plt.show()
